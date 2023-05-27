@@ -4,11 +4,9 @@
 
 int main()
 {
-    DFS dfs;
-    Mapa m;
-    
     // DFS
 
+    DFS dfs;
     auto start = chrono::high_resolution_clock::now();
     dfs.lerArquivo();
     auto end = chrono::high_resolution_clock::now();
@@ -26,7 +24,8 @@ int main()
     cout << "Tempo de execucao: " << sec << " segundos" << endl;
 
     // RAND
-    
+
+    Mapa m;
     srand(time(NULL));
     ReadMatrix(&m);
     auto start2 = chrono::high_resolution_clock::now();
