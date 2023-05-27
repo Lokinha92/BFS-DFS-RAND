@@ -219,6 +219,7 @@ void BFS()
 
         if (i == i_final && j == j_final)
         {
+            cont ++;
             break;
         }
 

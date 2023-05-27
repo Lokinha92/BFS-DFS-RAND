@@ -186,7 +186,21 @@ Após isso, a contagem do tempo de execução é iniciada, a busca é realizada 
 ```
 <h2 align = center> 🔍 MAIS SOBRE OS MÉTODOS DE BUSCA </h2>
 <h3 align = center> BUSCA EM LARGURA (BFS)</h3>
+
 <p>Na teoria dos grafos, busca em largura (ou busca em amplitude, também conhecido em inglês por Breadth-First Search - BFS) é um algoritmo de busca em grafos utilizado para realizar uma busca ou travessia num grafo e estrutura de dados do tipo árvore. Intuitivamente, você começa pelo vértice raiz e explora todos os vértices vizinhos. Então, para cada um desses vértices mais próximos, exploramos os seus vértices vizinhos inexplorados e assim por diante, até que ele encontre o alvo da busca. (Wikipedia)</p>
+
 <p>O BFS é um algoritmo clássico de busca em grafos que explora sistematicamente todos os vértices de um grafo a partir de um vértice inicial. Ele garante que todos os vértices sejam visitados em uma ordem crescente de suas distâncias em relação ao vértice inicial. Em outras palavras, o BFS visita os vértices em camadas, começando pelo vértice inicial e avançando para seus vizinhos antes de explorar vértices mais distantes. (Chat GPT)</p>
 
-<p></p>
+<p>Em síntese, podemos trazer a lógica da busca em largura para o caminhamento de matrizes NxN, como é o caso deste algorítmo. A matriz é tratada como um grafo, onde cada elemento representa um vértice. O BFS percorre os elementos das posições não visitadas, explorando seus vizinhos antes de partir para as proximas posições. Isso garante que os elementos sejam visitados em uma ordem crescente em relação a sua distância com a posição inicial da busca. Em outras palavras, a busca ocorre em um "formato de onda" onde sua área se expande a cada iteração.
+A busca é controlada por uma estrutura de fila, onde a posição, ou vértice, atual da busca é representada pelo primeiro valor da fila. </p>
+
+<div align = center> <img align src = /img/BFS_exemplo.png> </div>
+
+<p>No caso desta implementação do método BFS, a busca ocorre em um labirinto em formato de matriz, que segue as regras citadas ao começo do documento. Essa matriz é lida do arquivo "matrix.data" (dataset/matrix.data) e deve obrigatóriamente ser uma matriz quadrada de tamaho NxN. Eis um exemplo de entrada do arquivo "matrix.data" de uma matriz de formato 10x10</p>
+
+<div align = center> <img align src = /img/entrada_BFS.png> </div>
+
+<h4 align = center>👨‍💻 CODIFICAÇÃO DO MÉTODO DE BUSCA EM LARGURA (BFS)</h4>
+<strong><p align = center> bfs.hpp</p></strong>
+
+
