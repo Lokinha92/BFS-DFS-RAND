@@ -194,13 +194,256 @@ Após isso, a contagem do tempo de execução é iniciada, a busca é realizada 
 <p>Em síntese, podemos trazer a lógica da busca em largura para o caminhamento de matrizes NxN, como é o caso deste algorítmo. A matriz é tratada como um grafo, onde cada elemento representa um vértice. O BFS percorre os elementos das posições não visitadas, explorando seus vizinhos antes de partir para as proximas posições. Isso garante que os elementos sejam visitados em uma ordem crescente em relação a sua distância com a posição inicial da busca. Em outras palavras, a busca ocorre em um "formato de onda" onde sua área se expande a cada iteração.
 A busca é controlada por uma estrutura de fila, onde a posição, ou vértice, atual da busca é representada pelo primeiro valor da fila. </p>
 
-<div align = center> <img align src = /img/BFS_exemplo.png> </div>
+<div align = center> <img align src = /img/BFS.gif> </div>
 
 <p>No caso desta implementação do método BFS, a busca ocorre em um labirinto em formato de matriz, que segue as regras citadas ao começo do documento. Essa matriz é lida do arquivo "matrix.data" (dataset/matrix.data) e deve obrigatóriamente ser uma matriz quadrada de tamaho NxN. Eis um exemplo de entrada do arquivo "matrix.data" de uma matriz de formato 10x10</p>
 
 <div align = center> <img align src = /img/entrada_BFS.png> </div>
 
 <h4 align = center>👨‍💻 CODIFICAÇÃO DO MÉTODO DE BUSCA EM LARGURA (BFS)</h4>
-<strong><p align = center> bfs.hpp</p></strong>
+<strong><p align = center> bfs.hpp (src/bfs.hpp)</p></strong>
+
+Como dito anteriormente, o arquivo "bfs.hpp" contém a declaração de todas as bibliotecas e funções utilizadas pelo algoritmo.
+
+De início, as bibliotecas e o namespace são declarados.
+
+```c++
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <ctime>
+#include <chrono>
+using namespace std;
+```
+
+Logo após, as structs que compõem a estrutura de fila são declaradas.
+
+```c++
+typedef struct No No;
+typedef struct Fila Fila;
+
+struct No {
+    int pos;
+    No* prox;
+};
+
+struct Fila{
+    No* primeiro;
+    No* ultimo;
+};
+```
+
+A struct "No" representa as posições da fila, e armazena o valor inteiro que vai controlar o método de busca, representado a linha e a coluna atual da busca na matriz.
+
+A struct "Fila" representa a estrutura de fila propriamente dita. E contém os ponteiros para o primeiro e ultimo elemento da fila.
+
+Em seguida, as funções usadas durante a implementação do BFS são declaradas.
+
+Primeiro, as funções que envolvem a estrutura de fila são declaradas:
+
+```c++
+// funções da fila
+void inicia_fila(Fila* f);
+bool vazia(Fila* f);
+void enfilera(Fila* f, int val);
+void desenfilera(Fila* f);
+void mostra_fila(Fila* f);
+void limpa_fila(Fila* f);
+```
+
+A função "inicia_fila()" serve para iniciar uma fila vazia;
+
+A função "vazia()" verifica se uma fila tem elementos ou não;
+
+"enfilera()" adiciona um item ao final da fila.
+
+"desenfilera()" remove o primeiro elemento da fila.
+
+"mostra_fila()" mostra todos os elementos da fila.
+
+"limpa_fila()" remove todos os elementos da fila de uma vez.
+
+Todas as funções recebem a fila em questão como parâmetro, e a função "enfilera()" recebe como parâmeto, além da fila, o valor inteiro a ser adicionado à fila.
+
+Depois, são declaradas as funções que envolvem a montagem e reinicio da matriz
+
+```c++
+// funções da matriz
+void matrix_values(char *vet_values);
+int matrix_size();
+void reseta_mat(char **mat, int tam);
+```
+
+A função "matrix_values()" recebe um vetor do tipo char como parâmetro, e serve para ler a matriz do arquivo "matrix.data" e armazenar os caracteres no vetor.
+
+"matrix_size()" retorna a dimensão da matriz lida do arquivo "matrix.data"
+
+"reseta_mat()" serve para resetar os valores da matriz quando a busca atinge um "*", e recebe como parâmetro a matriz em questão e um inteiro que representa a dimensão da matriz.
+
+Por fim, as funções de verificação da matriz, e a função principal do BFS são declaradas.
+
+```c++
+// funções de verificação, log e função principal
+void verifica_1(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
+void verifica_ast(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
+void log(char *mat, int tam);
+void BFS();
+```
+
+"verifica_1()" verifica se a posição passada como parâmetro pela matriz tem o caractere '1' como valor e executa as açoes necessárias para o BFS.
+
+"verifica_ast()" verifica se a posição passada como parâmetro pela matriz tem o caractere '*' como valor e executa as açoes necessárias para o BFS.
+
+As duas funções recebem como parâmetro a matriz em questão, a posição a ser verificada (i e j), e as filas que fazem controle do método de busca.
+
+"log()" recebe a matriz em questão, e um inteiro que representa a dimensão da matriz. Serve para exportar o caminho tomado pelo método dentro da matriz para o arquivo "log_bfs.data"(dataset/log_bfs.data).
+
+"BFS()" é a função principal, e executa todos os passos necessários para o funcionamento do método de busca em largura.
+
+<strong><p align = center> bfs.cpp (src/bfs.cpp)</p></strong>
+
+Seguindo a ordem das declarações no arquivo bfs.hpp, a implementação do funcionamento das funções é feito, de acordo com as descrições anteriores.
+
+Primeiro, as funções que envolvem a estrutura de fila
+```c++
+void inicia_fila(Fila *f)
+{
+    f->primeiro = f->ultimo = nullptr;
+}
+
+bool vazia(Fila *f)
+{
+    return (f->primeiro == nullptr);
+}
+
+void enfilera(Fila *f, int val)
+{
+    No *NovoNO = new No;
+    NovoNO->pos = val;
+    NovoNO->prox = nullptr;
+    if (vazia(f))
+    {
+        f->primeiro = f->ultimo = NovoNO;
+    }
+    else
+    {
+        f->ultimo->prox = NovoNO;
+        f->ultimo = NovoNO;
+    }
+}
+
+void desenfilera(Fila *f)
+{
+    if (vazia(f))
+    {
+        cout << "FILA VAZIA!" << endl;
+    }
+    else
+    {
+        // int removeu = f->primeiro->pos; // o que ta removendo
+        No *remove = f->primeiro;
+        f->primeiro = f->primeiro->prox;
+        delete remove;
+    }
+}
+
+void mostra_fila(Fila *f)
+{
+    if (vazia(f))
+    {
+        cout << "FILA VAZIA!!" << endl;
+    }
+    No *espaco = f->primeiro;
+    while (espaco)
+    {
+        cout << espaco->pos << " ";
+        espaco = espaco->prox;
+    }
+    cout << endl;
+}
+```
+
+Depois as funções que envolvem a matriz em questão
+
+```c++
+int matrix_size()
+{
+    char aux;
+    int matrix_tam = 0;
+    ifstream file;
+    file.open("./dataset/matrix.data");
+
+    if (file.is_open())
+    {
+        while (file >> aux)
+        {
+            matrix_tam++;
+        }
+
+        file.close();
+    }
+    
+    return sqrt(matrix_tam);
+}
+
+void matrix_values(char *vet_values)
+{
+    char aux;
+    int k = 0;
+    ifstream file;
+    file.open("./dataset/matrix.data");
+
+    if (file.is_open())
+    {
+        while (file >> aux)
+        {
+            vet_values[k] = aux;
+            k++;
+        }
+    }
+
+    file.close();
+}
+
+void limpa_fila(Fila *f)
+{
+    while (!vazia(f))
+    {
+        desenfilera(f);
+    }
+}
+
+void reseta_mat(char *mat, int tam)
+{
+    int i = 0, j = 0;
+
+    for (i = 0; i < tam; i++)
+    {
+        for (j = 0; j < tam; j++)
+        {
+            if (*((mat + i * tam) + j) == 'v')
+            {
+                *((mat + i * tam) + j) = '1';
+            }
+        }
+    }
+}
+```
+
+Agora, em uma abordagem mais detalhada, segue a maneira que o método foi implementado, tendo como funções principais "verifica_1()",  "verifica_ast()", "log()" e "BFS()"
+
+```c++
+void BFS()
+{
+    int tam = matrix_size(), k = 0;
+    char mat[tam][tam], vet_values[tam * tam];
+
+    matrix_values(vet_values);
+```
+
+A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 0  (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (k). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
+
+
+
 
 

@@ -59,7 +59,7 @@ void mostra_fila(Fila *f)
 int matrix_size()
 {
     char aux;
-    int matrix_tam;
+    int matrix_tam = 0;
     ifstream file;
     file.open("./dataset/matrix.data");
 
@@ -69,9 +69,10 @@ int matrix_size()
         {
             matrix_tam++;
         }
-    }
 
-    file.close();
+        file.close();
+    }
+    
     return sqrt(matrix_tam);
 }
 
@@ -165,7 +166,7 @@ void log(char *mat, int tam){
 void BFS()
 {
     int tam = matrix_size(), k = 0;
-    char mat[tam][tam], vet_values[tam * tam], vet_log[tam * tam];
+    char mat[tam][tam], vet_values[tam * tam];
 
     matrix_values(vet_values);
 

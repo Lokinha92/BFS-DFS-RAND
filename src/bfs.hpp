@@ -31,7 +31,7 @@ void matrix_values(char *vet_values);
 int matrix_size();
 void reseta_mat(char **mat, int tam);
 
-// funções de caminhamento, log e função principal
+// funções de verificação, log e função principal
 void verifica_1(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
 void verifica_ast(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
 void log(char *mat, int tam);
