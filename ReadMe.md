@@ -643,12 +643,12 @@ A busca em profundidade (DFS) é um algoritmo utilizado para percorrer ou buscar
 Existem várias formas de implementar uma busca em profundidade. Pela natureza de percorrer o grafo ou árvore enquanto houverem filhos não visitados, uma solução natural é utilizar recursão. Outra abordagem é utilizar um algoritmo iterativo e utilizar uma pilha (LIFO) para controlar os nós a serem visitados.
 
 --------------------
-<div align = center> <img align src = /img/DFSimg.png> </div>
+<div align = center> <img align src = ./img/DFSimg.png> </div>
 
 
 Na primeira fase da execução do algoritmo, ele coloca a posição inicial (0, 0) do labirinto na pilha. Em seguida, ele verifica a posição a direita e percorre-a até encontrar um obstáculo ou chegar ao fim do labirinto, empilhando todas as posições percorridas. Durante esse processo, as posições já percorridas são marcadas e não podem ser percorridas novamente. A fila é utilizada para determinar a ordem em que as posições devem ser exploradas pelo algoritmo. No início, a posição inicial (0, 0) é adicionada à fila. A cada iteração do loop principal do algoritmo, a posição da frente da fila é removida e examinada. Se essa posição levar a novos caminhos disponíveis, essas posições são adicionadas à fila, permitindo que sejam exploradas posteriormente.
 
-c++
+```c++
 void DFS::testarMovimento(queue<pair<int, int>> &fila, vector<vector<int>> &matriz, vector<vector<int>> &matriz_aux, int x, int y) {
 	if (y + 1 < tamanho) {
 		if (matriz_aux[x][y + 1] == caminho || matriz[x][y + 1] == perigo || matriz[x][y + 1] == final) {
@@ -658,7 +658,7 @@ void DFS::testarMovimento(queue<pair<int, int>> &fila, vector<vector<int>> &matr
 		}
 	}
 }
-
+```
 Quando o algoritmo encontra uma barreira, ele procura por outras direções para seguir, começando pela direita, depois para baixo, esquerda e acima, se necessário. Se o algoritmo ficar preso entre barreiras, ele desempilha a posição atual e atribui o valor 1 a ela, indicando que não deve mais ser percorrida, e continua em busca de uma nova posição viável.
 
 "percorreMatriz(vector<vector<int>>& matriz)": Essa é a função principal do algoritmo DFS. Ela recebe a matriz do labirinto como argumento. A função cria uma fila vazia e adiciona a posição inicial (0, 0) à fila. Também cria uma matriz auxiliar com as mesmas dimensões do labirinto para acompanhar as posições visitadas.
@@ -671,7 +671,7 @@ A matriz auxiliar é atualizada para marcar a posição atual como visitada. A p
 
 Se a posição atual for um perigo, o algoritmo redefine o labirinto e a matriz auxiliar, esvazia a fila e a pilha, adiciona a posição inicial novamente à fila e atualiza a matriz auxiliar para marcar todas as posições não pertencentes a paredes, perigos ou a posição final como caminho.
 
-c++
+```c++
 void DFS::percorreMatriz(vector<vector<int>> &matriz) {
 	queue<pair<int, int>> fila;
 
@@ -702,15 +702,15 @@ void DFS::percorreMatriz(vector<vector<int>> &matriz) {
 		int b = frente.second;
     }
 }
-
+```
 
 O algoritmo imprime o número de passos necessários para alcançar o final do labirinto. Por fim, ele imprime novamente o labirinto, destacando as posições visitadas durante o percurso com o valor 1.
 
-c++
+```c++
 	printf("Quantidade de passos DFS: %d\n", this->quantidaPassos);
 	log(matriz_aux, -1, -1);
 	resultadoFinal();
-
+```
 <h3 align = center> MÉTODO RANDÔMICO</h3>
 
 A busca randômica é um método heurístico que faz escolhas aleatórias para explorar o espaço de busca até que o objetivo seja encontrado. A principal característica desse algoritmo é a falta de uma estratégia direcionada, o que significa que não há garantia de que o objetivo será encontrado ou de que será encontrado em um tempo razoável.
@@ -921,8 +921,8 @@ Após o processo de análise e de submeter os algoritmos a testes com diferentes
 
 Após submeter os 3 algoritmos a testes com diferentes matrizes de diferentes tamanhos, registramos os tempos de execução em uma tabela.
 
-<div align = center> <img align src = /img/tabela_1.png> </div>
-<div align = center> <img align src = /img/tabela_2.png> </div>
+<div align = center> <img align src = ./img/tabela_1.png> </div>
+<div align = center> <img align src = ./img/tabela_2.png> </div>
 
 
 ## BFS
