@@ -66,22 +66,21 @@ void limpa_fila(Fila *f)
 
 int matrix_size()
 {
-    char aux;
-    int matrix_tam = 0;
+    string tam;
+    int cont = 0;
     ifstream file;
-    file.open("./dataset/matrix.data");
+    file.open("./dataset/input.data");
 
     if (file.is_open())
     {
-        while (file >> aux)
+        while (cont != 2)
         {
-            matrix_tam++;
+            getline(file, tam, ' ');
+            cont++;
         }
-
-        file.close();
     }
-    
-    return sqrt(matrix_tam);
+
+    return stoi(tam);
 }
 
 void matrix_values(char *vet_values)
@@ -89,7 +88,7 @@ void matrix_values(char *vet_values)
     char aux;
     int k = 0;
     ifstream file;
-    file.open("./dataset/matrix.data");
+    file.open("./dataset/input.data");
 
     if (file.is_open())
     {
@@ -142,8 +141,9 @@ void verifica_ast(char *mat, int i, int j, int i_inicio, int j_inicio, int tam, 
     }
 }
 
-void log(char *mat, int tam){
-    
+void log(char *mat, int tam)
+{
+
     fstream log;
     log.open("./dataset/log_bfs.data");
     int i, j;
@@ -165,7 +165,7 @@ void log(char *mat, int tam){
 
 void BFS()
 {
-    int tam = matrix_size(), k = 0;
+    int tam = matrix_size(), k = 4;
     char mat[tam][tam], vet_values[tam * tam];
 
     matrix_values(vet_values);
@@ -226,7 +226,7 @@ void BFS()
 
         if (i == i_final && j == j_final)
         {
-            cont ++;
+            cont++;
             cont++;
             break;
         }
@@ -249,7 +249,6 @@ void BFS()
     mat[i_final][j_final] = '?';
 
     log((char *)mat, tam);
-    
 
     cout << "\nBFS CHEGOU AO FINAL!" << endl;
     cout << "Quantidade de passos BFS: " << cont << endl;

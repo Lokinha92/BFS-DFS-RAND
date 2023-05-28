@@ -63,6 +63,11 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
         <tr>
         <td>chrono</td>
     </tr>
+            </tr>
+        <tr>
+        <td>string</td>
+    </tr>
+    
 </table>
 
 <h2 align = center>📄 ARQUIVOS UTILIZADOS</h2>
@@ -113,14 +118,9 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
 <tr>
         <td> input.data </td>    
     </tr>
-    <tr>
-        <td> matrix.txt </td>    
-    </tr>
 </table>
 
-<b>input.data: Contém em sua primeira linha a quantidade de linhas e colunas que as matrizes geradas terão e, no resto do documento, os valores que irão compor essas matrizes</b>
-
-<b>matrix.data: Contém a matriz que será lida para o método de busca em largura (BFS)</b>
+<b>input.data: Contém em sua primeira linha a quantidade de linhas e colunas que as matrizes terão e, no resto do documento, os valores que irão compor essas matrizes</b>
 
 <h3><b>Arquivos de saída: </b></h3>
 <table>
@@ -382,22 +382,21 @@ Depois as funções que envolvem a matriz em questão
 ```c++
 int matrix_size()
 {
-    char aux;
-    int matrix_tam = 0;
+    string tam;
+    int cont = 0;
     ifstream file;
-    file.open("./dataset/matrix.data");
+    file.open("./dataset/input.data");
 
     if (file.is_open())
     {
-        while (file >> aux)
+        while (cont != 2)
         {
-            matrix_tam++;
+            getline(file, tam, ' ');
+            cont++;
         }
-
-        file.close();
     }
-    
-    return sqrt(matrix_tam);
+
+    return stoi(tam);
 }
 
 void matrix_values(char *vet_values)
@@ -405,7 +404,7 @@ void matrix_values(char *vet_values)
     char aux;
     int k = 0;
     ifstream file;
-    file.open("./dataset/matrix.data");
+    file.open("./dataset/input.data");
 
     if (file.is_open())
     {
@@ -418,6 +417,7 @@ void matrix_values(char *vet_values)
 
     file.close();
 }
+
 
 void reseta_mat(char *mat, int tam)
 {
@@ -441,13 +441,13 @@ Agora, em uma abordagem mais detalhada, segue a maneira que o método foi implem
 ```c++
 void BFS()
 {
-    int tam = matrix_size(), k = 0;
+    int tam = matrix_size(), k = 4;
     char mat[tam][tam], vet_values[tam * tam];
 
     matrix_values(vet_values);
 ```
 
-A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 0  (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
+A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 4 para que a leitura seja feita a partir do primeiro item da matriz (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
 
 A seguir, os valores armazenados no vetor "vet_values" são transferidos para a matriz "mat".
 ```c++
@@ -518,7 +518,7 @@ Também são declaradas as variáveis i e j, que vão representar a linha e colu
 
     int i, j;
 ```
-Por fim, a busca finalmente acontece. Vamos a uma visão mais a fundo dela:
+Enfim, a busca finalmente acontece. Vamos a uma visão mais a fundo dela:
 
 ```c++
 // BFS !!
@@ -644,7 +644,7 @@ Utilizando a seguinte matriz como entrada para os 3 algoritmos, podemos exemplif
 
 A partir da leitura dessa matriz, os métodos devem ser executados e suas iterações e tempo de execução devem ser mostrados no terminal, dessa forma:
 
-<div align = center> <img align src = /img/terminal_exemplo.png> </div>
+<div align = center> <img align src = /img/terminal.png> </div>
 
 Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo número de iterações, porém com tempos distintos. Já o método randômico faz mais iterações e em um tempo diferente também.
 
