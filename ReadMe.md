@@ -644,9 +644,23 @@ Utilizando a seguinte matriz como entrada para os 3 algoritmos, podemos exemplif
 
 A partir da leitura dessa matriz, os métodos devem ser executados e suas iterações e tempo de execução devem ser mostrados no terminal, dessa forma:
 
-<div align = center> <img align src = /img/terminal.png> </div>
+<div align = center> <img align src = /img/resultado_esperado.png> </div>
 
 Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo número de iterações, porém com tempos distintos. Já o método randômico faz mais iterações e em um tempo diferente também.
+
+Os caminhos tomados por cada tipo de busca pode ser acessado no respectivo aqruivo de saída: "log_bfs" para o BFS, "log_DFS" para o DFS e "outputRandom" para o método randômico.
+
+<strong><p align = center> log_dfs.data</p></strong>
+
+<div align = center> <img align src = /img/log_dfs.png> </div>
+
+<strong><p align = center> log_bfs.data</p></strong>
+
+<div align = center> <img align src = /img/log_bfs.png> </div>
+
+<strong><p align = center> outputRandom.data</p></strong>
+
+<div align = center> <img align src = /img/log_rand.png> </div>
 
 <h2 align = center>🔧 Compilação e execução </h2>
 </h2>
