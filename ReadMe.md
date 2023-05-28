@@ -285,7 +285,7 @@ Por fim, as funções de verificação da matriz, e a função principal do BFS 
 ```c++
 // funções de verificação, log e função principal
 void verifica_1(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
-void verifica_ast(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
+void verifica_ast(char *mat, int i, int j, int i_inicio, int j_inicio, int tam, Fila *linha, Fila *coluna);
 void log(char *mat, int tam);
 void BFS();
 ```
@@ -361,6 +361,15 @@ void mostra_fila(Fila *f)
     }
     cout << endl;
 }
+
+void limpa_fila(Fila *f)
+{
+    while (!vazia(f))
+    {
+        desenfilera(f);
+    }
+}
+
 ```
 
 Depois as funções que envolvem a matriz em questão
@@ -405,14 +414,6 @@ void matrix_values(char *vet_values)
     file.close();
 }
 
-void limpa_fila(Fila *f)
-{
-    while (!vazia(f))
-    {
-        desenfilera(f);
-    }
-}
-
 void reseta_mat(char *mat, int tam)
 {
     int i = 0, j = 0;
@@ -441,9 +442,212 @@ void BFS()
     matrix_values(vet_values);
 ```
 
-A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 0  (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (k). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
+A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 0  (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
 
+A seguir, os valores armazenados no vetor "vet_values" são transferidos para a matriz "mat".
+```c++
+    for (int i = 0; i < tam; i++)
+    {
+        for (int j = 0; j < tam; j++)
+        {
+            mat[i][j] = vet_values[k];
+            k++;
+        }
+    }
+```
 
+Depois, as filas que vão controlar a busca são declaradas e inicializadas. Também são declaradas as variáveis i_final e J_final, elas servirão para verificar a existência do alvo ('?') na matriz.
 
+Note que as variáveis i_final e j_final são inicializadas com o valor -1. Isso por que o alvo pode estar em qualquer posição, e valores negativos não fazem parte do domínio analisado na matriz
 
+A variável cont também é declarada e inicializada em 0, ela representa o número de iterações feitas pelo BFS.
+
+```c++
+    Fila linha, coluna;
+    inicia_fila(&linha);
+    inicia_fila(&coluna);
+    int cont = 0, i_final = -1, j_final = -1;
+```
+
+Em seguida, a existência do caractere alvo ('?') é verificado. Caso ele seja identificado na matriz, o índice referente a sua posição na matriz (linha e coluna) é armazenado nas variáveis i_final e j_final, respectivamente. Se não, uma mensagem de erro é exibida no terminal.
+
+```c++
+    // Identificando a posição do alvo
+    for (int i = 0; i < tam; i++)
+    {
+        for (int j = 0; j < tam; j++)
+        {
+            if (mat[i][j] == '?')
+            {
+                i_final = i;
+                j_final = j;
+                mat[i][j] = '1';
+                break;
+            }
+        }
+    }
+
+    if (i_final == -1)
+    {
+        cout << "O ALVO NÃO FOI IDENTIFICADO NA MATRIZ!" << endl
+             << endl;
+        return;
+    }
+```
+
+Aqui, chegamos a parte da função onde a busca é configurada e ocorre de fato.
+
+Primeiramente, a posição de início é definida através do valor contido nas variáveis i_inicio, j_inicio, para alterá-la basta modificar o valor das variáveis. Depois de definida a posição inicial, ela é adicionada à sua respectiva fila para que a busca comece. A posição de inicio é marcada como visitada.
+
+Também são declaradas as variáveis i e j, que vão representar a linha e coluna atual onde a busca se encontra.
+
+```c++
+    // Setando a posição de início
+
+    int i_inicio = 0;
+    int j_inicio = 0;
+
+    enfilera(&linha, i_inicio);
+    enfilera(&coluna, j_inicio);
+    mat[i_inicio][j_inicio] = 'v';
+
+    int i, j;
+```
+Por fim, a busca finalmente acontece. Vamos a uma visão mais a fundo dela:
+
+```c++
+// BFS !!
+
+    while (!vazia(&linha))
+    {
+        i = linha.primeiro->pos;
+        j = coluna.primeiro->pos;
+
+        if (i == i_final && j == j_final)
+        {
+            cont ++;
+            break;
+        }
+
+        desenfilera(&linha);
+        desenfilera(&coluna);
+
+        verifica_1((char *)mat, i + 1, j, tam, &linha, &coluna); // baixo
+        verifica_1((char *)mat, i, j - 1, tam, &linha, &coluna); // esq
+        verifica_1((char *)mat, i - 1, j, tam, &linha, &coluna); // p cima
+        verifica_1((char *)mat, i, j + 1, tam, &linha, &coluna); // direita
+
+        verifica_ast((char *)mat, i + 1, j, tam, &linha, &coluna); // baixo
+        verifica_ast((char *)mat, i, j - 1, tam, &linha, &coluna); // esq
+        verifica_ast((char *)mat, i - 1, j, tam, &linha, &coluna); // p cima
+        verifica_ast((char *)mat, i, j + 1, tam, &linha, &coluna); // direita
+
+        cont++;
+    }
+```
+
+A busca ocorrerá enquanto existirem elementos nas filas. Como durante toda a busca, o número de elementos das filas de linha e coluna serão sempre o mesmo, basta que a verificação no loop while seja feita em apenas uma das filas para que a busca aconteça.
+
+O primeiro passo da busca, é acessar o primeiro elemento das filas de linha e coluna, e atribuir ao valor de i e j respectivamente.
+
+Em seguida, é verificado se a posição atual da busca é a posição do caractere alvo ('?'). Caso seja, o contador de iterações é incrementado e a busca é encerrada, se não, a busca continua.
+
+Após essa verificação, a posição atual do processamento é desenfileirada para que a próxima posição visitada seja a primeira da fila, e seja processada após a verificação.
+
+A verificação é feita "em blocos" de forma que seja verificado o valor das posições vizinhas abaixo, a esquerda, acima e a direita (nessa ordem de prioridade) da posição de processamento atual.
+
+O primeiro bloco de verificação, verifica se a posição vizinha é o caractere '1', utilizando a função "verifica_1":
+
+```c++
+void verifica_1(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna)
+{
+    if (((i >= 0 && i <= tam - 1) && (j >= 0 && j <= tam - 1)) && *((mat + i * tam) + j) == '1')
+    {
+        *((mat + i * tam) + j) = 'v';
+        enfilera(linha, i);
+        enfilera(coluna, j);
+    }
+}
+```
+
+A função "Verifica_I" verifica se o índice do valor verificado pertente ao domínio da matriz, e se o valor verificado corresponde ao caractere '1'. 
+Caso a verificação seja verdadeira, a posição é marcada como visitada e o valor do índice da linha e da coluna são adicionados à sua respectiva fila para que seus vizinhos também sejam analizados e processados.
+
+Caso o vizinho da posição atual de processamento não seja um caminho livre (caractere '1'), é verificado através da função "verifica_ast' se o valor do vizinho corresponde ao caractere '*'.
+
+```c++
+void verifica_ast(char *mat, int i, int j, int i_inicio, int j_inicio, int tam, Fila *linha, Fila *coluna)
+{
+    if (((i >= 0 && i <= tam - 1) && (j >= 0 && j <= tam - 1)) && *((mat + i * tam) + j) == '*')
+    {
+        *((mat + i * tam) + j) = '1';
+        reseta_mat(mat, tam);
+        limpa_fila(linha);
+        limpa_fila(coluna);
+        enfilera(linha, i_inicio);
+        enfilera(coluna, j_inicio);
+    }
+}
+```
+A função "Verifica_ast" verifica se o índice do valor verificado pertente ao domínio da matriz, e se o valor verificado corresponde ao caractere '*'. 
+
+Seguindo as regras, a posição contendo o '*' é definida como '1' e se torna um caminho livre para passagem. Isso da margem para novas possibilidades de caminho até o alvo.
+Após isso, as posições já visitadas são novamente transformadas em '1', através da função "reseta_mat". As filas são limpas, e é adicionado o índice inicial em ambas as filas, significando que a execução voltou ao inicio.
+
+Ao fim da verificação de um índice, o contador de iterações é incrementado, sinalizando que a busca avançou para a próxima posição.
+
+Caso a busca fique "presa" entre paredes e não consiga mais proseguir rumo ao alvo, a fila se esvazia, a busca é encerrada e o caminho tomado e o número de iterações se limitam até aquele momento da busca.
+
+Atingindo o alvo, ou não, ao fim de todas as verificações, a posição do alvo é novamente substituída pelo caractere '?'. A função "log" é usada para mostrar o caminho tomado pelo BFS até o fim da busca. A matriz contendo o caminho é gravada no arquivo "log_bfs.data".
+
+Finalmente, uma mensagem é exibida no terminal para dizer que a busca chegou ao fim, juntamente com o número de iterações feitas durante ela.
+
+```c++
+    mat[i_final][j_final] = '?';
+
+    log((char *)mat, tam);
+    
+
+    cout << "\nBFS CHEGOU AO FINAL!" << endl;
+    cout << "Quantidade de passos BFS: " << cont << endl;
+}
+```
+
+<h3 align = center> BUSCA EM PROFUNDIDADE (DFS)</h3>
+
+YGOR BOTA SUA DOCUMENTAÇÃO AQUI
+
+<h3 align = center> MÉTODO RANDÔMICO</h3>
+
+RAFAEL BOTA SUA DOCUMENTAÇÃO AQUI
+
+<h2 align=center>🧠 DISCUSSÃO</h2>
+
+Após o processo de análise e de submeter os algoritmos a testes com diferentes matrizes de diferentes tamanhos, algumas perguntas podem ser levantadas e discutidas:
+
+- 1: Para diferentes tamanhos de matriz e posicionamento das paredes, há predominância de um dos algoritmos em termos de iterações e tempo de execução?
+
+- 2: Algum dos algoritmos é capaz de encontrar o melhor caminho, ou seja, o com o menor número de iterações?
+
+<h2 align = center>📈 Resultados esperados</h2>
+
+É esperado que, a partir de uma mesma entrada para os 3 algoritmos, eles sejam capazes de percorrer o labirinto rumo ao caractere alvo realizando a busca de acordo com o que cada um deles se propõe e seguindo as regras descritas, exibindo ao final o tempo de execução e o número de iterações feitas no processo. Isso permitirá uma análise dos 3 métodos, comparando seus tempos de execução e a quantidade de iterações.
+
+Utilizando a seguinte matriz como entrada para os 3 algoritmos, podemos exemplificar o funcionamento.
+
+<div align = center> <img align src = /img/exemplo_entrada.png> </div>
+
+A partir da leitura dessa matriz, os métodos devem ser executados e suas iterações e tempo de execução devem ser mostrados no terminal, dessa forma:
+
+<div align = center> <img align src = /img/terminal_exemplo.png> </div>
+
+Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo número de iterações, porém com tempos distintos. Já o método randômico faz mais iterações e em um tempo diferente também.
+
+<h2 align = center>🔧 Compilação e execução </h2>
+</h2>
+
+| Comando                |  Função                                                                                           |                     
+| -----------------------| ------------------------------------------------------------------------------------------------- |                                     
+|  `make`                | Executa a compilação do programa utilizando o g++, e o resultado vai para a pasta build           |
+|  `make run`            | Executa o programa da pasta build após a realização da compilação             
 

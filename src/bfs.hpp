@@ -33,6 +33,6 @@ void reseta_mat(char **mat, int tam);
 
 // funções de verificação, log e função principal
 void verifica_1(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
-void verifica_ast(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna);
+void verifica_ast(char *mat, int i, int j, int i_inicio, int j_inicio, int tam, Fila *linha, Fila *coluna);
 void log(char *mat, int tam);
 void BFS();

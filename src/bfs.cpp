@@ -56,6 +56,14 @@ void mostra_fila(Fila *f)
     cout << endl;
 }
 
+void limpa_fila(Fila *f)
+{
+    while (!vazia(f))
+    {
+        desenfilera(f);
+    }
+}
+
 int matrix_size()
 {
     char aux;
@@ -95,14 +103,6 @@ void matrix_values(char *vet_values)
     file.close();
 }
 
-void limpa_fila(Fila *f)
-{
-    while (!vazia(f))
-    {
-        desenfilera(f);
-    }
-}
-
 void reseta_mat(char *mat, int tam)
 {
     int i = 0, j = 0;
@@ -129,7 +129,7 @@ void verifica_1(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna)
     }
 }
 
-void verifica_ast(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna)
+void verifica_ast(char *mat, int i, int j, int i_inicio, int j_inicio, int tam, Fila *linha, Fila *coluna)
 {
     if (((i >= 0 && i <= tam - 1) && (j >= 0 && j <= tam - 1)) && *((mat + i * tam) + j) == '*')
     {
@@ -137,8 +137,8 @@ void verifica_ast(char *mat, int i, int j, int tam, Fila *linha, Fila *coluna)
         reseta_mat(mat, tam);
         limpa_fila(linha);
         limpa_fila(coluna);
-        enfilera(linha, 0);
-        enfilera(coluna, 0);
+        enfilera(linha, i_inicio);
+        enfilera(coluna, j_inicio);
     }
 }
 
@@ -207,11 +207,17 @@ void BFS()
     }
 
     // Setando a posição de início
-    enfilera(&linha, 0);
-    enfilera(&coluna, 0);
-    mat[0][0] = 'v';
+
+    int i_inicio = 0;
+    int j_inicio = 0;
+
+    enfilera(&linha, i_inicio);
+    enfilera(&coluna, j_inicio);
+    mat[i_inicio][j_inicio] = 'v';
 
     int i, j;
+
+    // BFS !!
 
     while (!vazia(&linha))
     {
@@ -221,6 +227,7 @@ void BFS()
         if (i == i_final && j == j_final)
         {
             cont ++;
+            cont++;
             break;
         }
 
@@ -232,10 +239,10 @@ void BFS()
         verifica_1((char *)mat, i - 1, j, tam, &linha, &coluna); // p cima
         verifica_1((char *)mat, i, j + 1, tam, &linha, &coluna); // direita
 
-        verifica_ast((char *)mat, i + 1, j, tam, &linha, &coluna); // baixo
-        verifica_ast((char *)mat, i, j - 1, tam, &linha, &coluna); // esq
-        verifica_ast((char *)mat, i - 1, j, tam, &linha, &coluna); // p cima
-        verifica_ast((char *)mat, i, j + 1, tam, &linha, &coluna); // direita
+        verifica_ast((char *)mat, i + 1, j, i_inicio, j_inicio, tam, &linha, &coluna); // baixo
+        verifica_ast((char *)mat, i, j - 1, i_inicio, j_inicio, tam, &linha, &coluna); // esq
+        verifica_ast((char *)mat, i - 1, j, i_inicio, j_inicio, tam, &linha, &coluna); // p cima
+        verifica_ast((char *)mat, i, j + 1, i_inicio, j_inicio, tam, &linha, &coluna); // direita
 
         cont++;
     }
