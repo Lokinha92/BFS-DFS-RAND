@@ -3,7 +3,7 @@
 
 <strong><p align = center> GUSTAVO HENRIQUE D'ANUNCIAÇÃO FERREIRA</p></strong>
 <strong><p align = center> YGOR</p></strong>
-<strong><p align = center> RAFAEL</p></strong>
+<strong><p align = center> RAFAEL HENRIQUE REIS COSTA</p></strong>
 <h2 align = center>  🧩 OBJETIVO </h2>
 
 <p><strong>Apresentar diferentes técnicas de caminhamento em labirinto e estabelecer comparações entre elas.</strong></p>
@@ -65,6 +65,24 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
     </tr>
 </table>
 
+<h2 align = center>  🗺️ MAPA </h2>
+
+### Tabela de Símbolos do Labirinto
+
+A estrutura padrão de matriz que é utilizada contém os seguintes símbolos:
+| Símbolo              | Significado                                                                                                             | 
+| ---------------------| -------------------------------------------------------------------------------------------------                       |
+| #                    | `Parede`   Não é possível passar por essa casa                                                                          |
+| *                    | `Perigo`  O caminhamento reinicia ao passar por essa casa, depois disso essa casa se transforma em '1'                  |
+| 1                    | `Passagem Livre`   É possível passar por essa casa                                                                      |
+| ?                    | `Objetivo`   O caminhamento finaliza ao passar por essa casa                                                            |
+
+# Exemplo de Entrada
+![This is an image](https://github.com/RafaelReisyzx/Labirinto-DFS-BFS-Random/blob/main/imgs/exemplo1.png)
+
+
+O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo do arquivo input.data. Na primeira linha, temos dois números inteiros que servem para configurar as estruturas do labirinto. O primeiro e o segundo número representam as linhas e colunas das matrizes. Esses números precisam ser iguais, pois está configurado para matrizes quadradas. As linhas seguintes são as linhas que constroem a matriz que será lida. Ela precisa estar separada por espaços, conforme mostrado no exemplo. O caminhamento se inicia no ponto (0,0) e finaliza no ponto contendo o objetivo "?".
+
 <h2 align = center>📄 ARQUIVOS UTILIZADOS</h2>
 
 <h3><b>Arquivos de codificação: </b></h3>
@@ -102,9 +120,9 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
 
 <b> dfs.cpp: </b>
 
-<b> random.hpp: </b>
+<b> random.hpp: Contém a definição da struct utilizada para representar a matriz, além das declarações das funções utilizadas no programa.</b>
 
-<b> random.cpp: </b>
+<b> random.cpp: Contém as implementações das funções declaradas no arquivo random.hpp </b>
 
 <strong>OBS: Os arquivos com extensão ".hpp" deve estar incluso aos arquivos "main.cpp" e também aos seus respectivos arquivos com extensão ".cpp"</strong>
 
@@ -131,7 +149,7 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
         <td> log_dfs.data </td>    
     </tr>
         <tr>
-        <td> outputRandom.data </td>    
+        <td> log_random.data </td>    
     </tr>
         </tr>
         <tr>
@@ -143,7 +161,7 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
 
 <b> log_dfs.data: Contém o caminho adotado na matriz pelo método de busca em profundidade (DFS).</b>
 
-<b> outputRandom.data: Contém o caminho adotado na matriz pelo método randômico de busca.</b> 
+<b> log_random.data: Contém o caminho adotado na matriz pelo método randômico de busca.</b> 
 
 <b> resultado_final.data: Contém o número de iterações feitas pelo método de busca em profundidade (DFS). </b>
 
@@ -624,7 +642,201 @@ YGOR BOTA SUA DOCUMENTAÇÃO AQUI
 
 <h3 align = center> MÉTODO RANDÔMICO</h3>
 
-RAFAEL BOTA SUA DOCUMENTAÇÃO AQUI
+A busca randômica é um método heurístico que faz escolhas aleatórias para explorar o espaço de busca até que o objetivo seja encontrado. A principal característica desse algoritmo é a falta de uma estratégia direcionada, o que significa que não há garantia de que o objetivo será encontrado ou de que será encontrado em um tempo razoável.
+
+# Funções 
+
+- ReadMatriz: lê uma matriz existente de um arquivo chamado "input.data". A matriz é armazenada na estrutura de dados do programa para ser manipulada posteriormente.
+ ```c++
+int ReadMatrix(Mapa *mat){
+    int linhas = 0, colunas = 0 , i, j;
+    char c;
+    FILE *f = fopen("dataset/input.data", "r");
+    if (f == NULL){
+        cout << "Erro ao abrir o arquivo.\n";
+        exit(EXIT_FAILURE);
+    }
+        fscanf(f, "%d %d", &linhas, &colunas);
+
+    for (i = 0; i < linhas; i++) {
+    for (j = 0; j < colunas; j++) {
+        c = fgetc(f);
+    while (isspace(c)){
+        c = fgetc(f);
+    }
+    if (c == '#'){
+    if (i == 0 && j == 0){  
+        c ='1';
+    }
+    } 
+        mat->Matriz.map[i][j] = c;
+
+    }  
+    }
+        mat->Matriz.tam=linhas;
+        fclose(f);
+    return 0; 
+}
+```
+- Random: é o algoritmo de caminhamento aleatório na matriz. Ele inicia na posição inicial do caminhante e realiza movimentos aleatórios em direções possíveis (cima, baixo, esquerda, direita e diagonais) até encontrar a casa objetivo marcada com '?'. Durante o caminhamento, o algoritmo demarca as paredes do labirinto, evitando passar por elas. O número de passos realizados é contado e armazenado na estrutura de dados do programa.
+
+Ordem de etapas dentro da função Random:
+1. **Verificar casa** : Nesta etapa, o algoritmo verifica o tipo de casa em que está atualmente. Existem duas possibilidades:
++ Perigo: Se a casa atual for um perigo, o caminhamento é reiniciado e a casa atual se torna uma casa '1' de passagem livre
++ Objetivo: Se a casa atual for o objetivo, isso significa que o algoritmo chegou ao destino desejado. Nesse caso, a execução do algoritmo é encerrada.
+2. **Demarcar paredes**: Após verificar o tipo de casa atual, o algoritmo demarca as paredes da casa. Isso significa que registra as direções que não podem ser seguidas. 
+3. **Escolher caminho**: Com base nas informações coletadas na etapa anterior, o algoritmo escolhe forma aleatória um caminho possível para prosseguir. Ele seleciona uma direção disponível que não esteja marcada como parede.
+4. **Caminhar**: Nesta etapa, o algoritmo efetivamente caminha pela opção selecionada na etapa anterior.
+
+```c++
+int Random(Mapa *mat){
+
+	int i=0,j=0,r=0,data=0,n,Direita=0,Esquerda=0,Baixo=0,Cima=0,DiagonalEsquerdaSuperior=0,DiagonalDireitaSuperior=0,DiagonalEsquerdaInferior=0,DiagonalDireitaInferior=0;   
+	n=mat->Matriz.tam;
+	mat->Matriz.passos=0;
+	for(;;){		 
+
+	//1° Etapa Verificador de casa
+	
+    if(mat->Matriz.map[i][j]=='*'){	 
+        mat->Matriz.map[i][j]='1';
+        i=0;
+        j=0;      
+    }else if(mat->Matriz.map[i][j]=='?'){	
+     cout << "\nRANDOM CHEGOU AO FINAL!";
+        cout<<"\nQuantidade de Passos: "<<mat->Matriz.passos;
+        cout << "\n";
+        mat->Matriz.passos=0;	
+	Finalization(mat);
+     break;
+    }
+	//2° Etapa Demarcar Paredes
+	//cima
+	if(mat->Matriz.map[i-1][j]=='#'){
+		Cima=-1;
+	}
+	//baixo
+	if(mat->Matriz.map[i+1][j]=='#'){
+		Baixo=-1;
+	}
+	//esquerda
+	if(mat->Matriz.map[i][j-1]=='#'){
+		Esquerda=-1;
+	}
+	//direita
+	if(mat->Matriz.map[i][j+1]=='#'){
+		Direita=-1;
+	}
+	//diagonal superior esquerda
+	if(mat->Matriz.map[i-1][j-1]=='#'){
+		DiagonalEsquerdaSuperior=-1;
+	}
+	//diagonal superior direita
+	if(mat->Matriz.map[i-1][j+1]=='#'){
+		DiagonalDireitaSuperior=-1;
+	}
+	//diagonal inferior esquerda
+	if(mat->Matriz.map[i+1][j-1]=='#'){
+		DiagonalEsquerdaInferior=-1;
+	}
+	//diagonal inferior direita
+	if(mat->Matriz.map[i+1][j+1]=='#'){
+		DiagonalDireitaInferior=-1;
+	}
+    //3° Etapa Escolher caminho possivel de caminhar
+	for(r=0;r<1;){
+	    data = rand()%8;
+	if(data==1&&Cima!=-1&&i>0){
+        r=1;
+	}else if(data==2&&Baixo!=-1&&i<n-1){
+	    r=1;
+	}else if(data==3&&Esquerda!=-1&&j>0){
+	    r=1;		
+	}else if(data==4&&Direita!=-1&&j<n-1){
+	    r=1;
+	}else if(data==5&&DiagonalDireitaSuperior!=-1&&i>0&&j<n-1){
+	    r=1;	
+	}else if(data==6&&DiagonalEsquerdaSuperior!=-1&&i>0&&j>0){
+        r=1;
+	}else if(data==7&&DiagonalDireitaInferior!=-1&&i<n-1&&j<n-1){
+	    r=1;		
+	}else if(data==8&&DiagonalEsquerdaInferior!=-1&&i<n-1&&j>0){
+	    r=1;	
+	}	
+   }
+    //4° Etapa Caminhar
+	
+	if(data==1){
+	    i=i-1;
+	    mat->Matriz.passos++;
+	}else if(data==2){
+	    i=i+1;
+	    mat->Matriz.passos++;
+	}else if(data==3){		
+	    j=j-1;
+	    mat->Matriz.passos++;
+	}else if(data==4){
+	    j=j+1;
+	    mat->Matriz.passos++;
+	}else if(data==5){
+	    i=i-1;
+	    j=j+1;
+	    mat->Matriz.passos++;
+	}else if(data==6){
+	    i=i-1;
+	    j=j-1;
+	    mat->Matriz.passos++;	
+	}else if(data==7){
+	    i=i+1;
+	    j=j+1;
+	    mat->Matriz.passos++;
+	}else if(data==8){
+        i=i+1;
+	    j=j-1;
+	    mat->Matriz.passos++;
+	}else
+	{		
+	}
+ 	    Cima=0;
+		Baixo=0;
+		Direita=0;
+		Esquerda=0;
+		DiagonalDireitaSuperior=0;
+		DiagonalEsquerdaSuperior=0;
+		DiagonalDireitaInferior=0;
+		DiagonalEsquerdaInferior=0;
+		r=0;
+
+	}
+
+	return 0;
+		}
+```
+
+-Finalization(): função responsável por criar um arquivo log_random.data contendo o mapa atualizado após o caminhamento Randômico.
+
+```c++
+	void Finalization(Mapa *mat)
+{
+	int i,j,n;
+	n=mat->Matriz.tam;
+	remove("dataset/log_random.data");
+	FILE *g = fopen("dataset/log_random.data", "a");
+    if (g == NULL) {
+        cout <<"Erro ao abrir o arquivo para atualização\n";
+        exit(EXIT_FAILURE);
+    }
+	
+	
+	for(i = 0; i < n; i++){
+		for(j = 0; j < n; j++){
+			 fprintf(g, "%c ", mat->Matriz.map[i][j]);
+		}
+		 fprintf(g, "\n");
+	}
+	
+}
+```
 
 <h2 align=center>🧠 DISCUSSÃO</h2>
 
@@ -648,11 +860,34 @@ A partir da leitura dessa matriz, os métodos devem ser executados e suas itera�
 
 Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo número de iterações, porém com tempos distintos. Já o método randômico faz mais iterações e em um tempo diferente também.
 
+<h2 align = center>🔚 Conclusão </h2>
+
+## BFS
+
+## DFS
+
+## Randômico
+
+- O desempenho do algoritmo de caminhamento aleatório em termos de tempo de execução e consumo de recursos pode variar dependendo do tamanho do labirinto e da densidade de obstáculos. Em labirintos grandes ou com muitos obstáculos, o algoritmo pode levar mais tempo para encontrar o caminho objetivo, pois a probabilidade de escolher uma direção livre diminui.
+- O algoritmo de caminhamento aleatório pode se comportar de maneira diferente em labirintos com múltiplas soluções ou com obstáculos e desvios. Em labirintos com múltiplas soluções, o algoritmo pode encontrar caminhos diferentes em execuções diferentes, explorando as várias opções disponíveis. No entanto, em labirintos com obstáculos complexos e desvios, o algoritmo pode ter dificuldade em encontrar o caminho objetivo devido à aleatoriedade de suas escolhas.
+- Em resumo, O custo da busca randômica depende de vários fatores, como o tamanho do espaço de busca, a localização do estado objetivo e a sorte do algoritmo ao escolher os próximos estados para explorar. Em alguns casos favoráveis, a busca randômica pode encontrar o objetivo rapidamente, enquanto em outros casos pode levar muito tempo ou até mesmo não encontrar o objetivo. O custo da busca randômica é altamente imprevisível e não pode ser expresso em uma análise assintótica.
+
+
 <h2 align = center>🔧 Compilação e execução </h2>
 </h2>
 
+A pasta do repositorio possui um arquivo Makefile que contém as instruções para compilar e executar. Para usar essas instruções, você pode usar o terminal do seu sistema
+operacional e navegar até o diretório raiz do projeto.
+
+Existem três comandos principais que você pode usar no Makefile:
+
+
 | Comando                |  Função                                                                                           |                     
-| -----------------------| ------------------------------------------------------------------------------------------------- |                                     
-|  `make`                | Executa a compilação do programa utilizando o g++, e o resultado vai para a pasta build           |
-|  `make run`            | Executa o programa da pasta build após a realização da compilação             
+| -----------------------| ------------------------------------------------------------------------------------------------- |
+|  `make clean`          | Apaga a última compilação realizada contida na pasta build                                        |
+|  `make`                | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build           |
+|  `make run`            | Executa o programa da pasta build após a realização da compilação                                 |
+
+Em resumo, para executar o programa, você precisa navegar até o diretório raiz do projeto e executar o comando make para compilar o programa e, em seguida, 
+executar o comando make run para executá-lo.Se você precisar limpar a compilação anterior, pode usar o comando make clean antes de executar a compilação.
 
