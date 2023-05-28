@@ -1,4 +1,9 @@
+<h1 align = center> AEDS I</h1>
 <h1 align = center> Labirinto por Profundidade (DFS), Largura (BFS) e Randomicamente</h1>
+
+<strong><p align = center> GUSTAVO HENRIQUE D'ANUNCIAÇÃO FERREIRA</p></strong>
+<strong><p align = center> YGOR</p></strong>
+<strong><p align = center> RAFAEL</p></strong>
 <h2 align = center>  🧩 OBJETIVO </h2>
 
 <p><strong>Apresentar diferentes técnicas de caminhamento em labirinto e estabelecer comparações entre elas.</strong></p>
