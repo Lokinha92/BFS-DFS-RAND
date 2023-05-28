@@ -3,6 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <chrono>
+#include <string>
 using namespace std;
 
 typedef struct No No;

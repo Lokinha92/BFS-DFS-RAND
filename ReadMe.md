@@ -63,6 +63,11 @@ Ao sofrer um dano o algoritmo deve demarcar a posição com o item 1, neutraliza
         <tr>
         <td>chrono</td>
     </tr>
+            </tr>
+        <tr>
+        <td>string</td>
+    </tr>
+    
 </table>
 
 <h2 align = center>  🗺️ MAPA </h2>
@@ -131,14 +136,9 @@ O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo d
 <tr>
         <td> input.data </td>    
     </tr>
-    <tr>
-        <td> matrix.txt </td>    
-    </tr>
 </table>
 
-<b>input.data: Contém em sua primeira linha a quantidade de linhas e colunas que as matrizes geradas terão e, no resto do documento, os valores que irão compor essas matrizes</b>
-
-<b>matrix.data: Contém a matriz que será lida para o método de busca em largura (BFS)</b>
+<b>input.data: Contém em sua primeira linha a quantidade de linhas e colunas que as matrizes terão e, no resto do documento, os valores que irão compor essas matrizes</b>
 
 <h3><b>Arquivos de saída: </b></h3>
 <table>
@@ -219,9 +219,9 @@ A busca é controlada por uma estrutura de fila, onde a posição, ou vértice, 
 
 <div align = center> <img align src = /img/BFS.gif> </div>
 
-<p>No caso desta implementação do método BFS, a busca ocorre em um labirinto em formato de matriz, que segue as regras citadas ao começo do documento. Essa matriz é lida do arquivo "matrix.data" (dataset/matrix.data) e deve obrigatóriamente ser uma matriz quadrada de tamaho NxN. Eis um exemplo de entrada do arquivo "matrix.data" de uma matriz de formato 10x10</p>
+<p>No caso desta implementação do método BFS, a busca ocorre em um labirinto em formato de matriz, que segue as regras citadas ao começo do documento. Essa matriz é lida do arquivo "input.data" (dataset/input.data) e deve obrigatóriamente ser uma matriz quadrada de tamaho NxN. Eis um exemplo de entrada do arquivo "input.data" de uma matriz de formato 10x10</p>
 
-<div align = center> <img align src = /img/entrada_BFS.png> </div>
+<div align = center> <img align src = /img/exemplo_entrada.png> </div>
 
 <h4 align = center>👨‍💻 CODIFICAÇÃO DO MÉTODO DE BUSCA EM LARGURA (BFS)</h4>
 <strong><p align = center> bfs.hpp (src/bfs.hpp)</p></strong>
@@ -297,9 +297,9 @@ int matrix_size();
 void reseta_mat(char **mat, int tam);
 ```
 
-A função "matrix_values()" recebe um vetor do tipo char como parâmetro, e serve para ler a matriz do arquivo "matrix.data" e armazenar os caracteres no vetor.
+A função "matrix_values()" recebe um vetor do tipo char como parâmetro, e serve para ler a matriz do arquivo "input.data" e armazenar os caracteres no vetor.
 
-"matrix_size()" retorna a dimensão da matriz lida do arquivo "matrix.data"
+"matrix_size()" retorna a dimensão da matriz lida do arquivo "input.data"
 
 "reseta_mat()" serve para resetar os valores da matriz quando a busca atinge um "*", e recebe como parâmetro a matriz em questão e um inteiro que representa a dimensão da matriz.
 
@@ -400,22 +400,21 @@ Depois as funções que envolvem a matriz em questão
 ```c++
 int matrix_size()
 {
-    char aux;
-    int matrix_tam = 0;
+    string tam;
+    int cont = 0;
     ifstream file;
-    file.open("./dataset/matrix.data");
+    file.open("./dataset/input.data");
 
     if (file.is_open())
     {
-        while (file >> aux)
+        while (cont != 2)
         {
-            matrix_tam++;
+            getline(file, tam, ' ');
+            cont++;
         }
-
-        file.close();
     }
-    
-    return sqrt(matrix_tam);
+
+    return stoi(tam);
 }
 
 void matrix_values(char *vet_values)
@@ -423,7 +422,7 @@ void matrix_values(char *vet_values)
     char aux;
     int k = 0;
     ifstream file;
-    file.open("./dataset/matrix.data");
+    file.open("./dataset/input.data");
 
     if (file.is_open())
     {
@@ -436,6 +435,7 @@ void matrix_values(char *vet_values)
 
     file.close();
 }
+
 
 void reseta_mat(char *mat, int tam)
 {
@@ -459,13 +459,13 @@ Agora, em uma abordagem mais detalhada, segue a maneira que o método foi implem
 ```c++
 void BFS()
 {
-    int tam = matrix_size(), k = 0;
+    int tam = matrix_size(), k = 4;
     char mat[tam][tam], vet_values[tam * tam];
 
     matrix_values(vet_values);
 ```
 
-A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 0  (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
+A princípio, a dimensão da matriz lida do arquivo "input.data" é armazenada na variável "tam", a variável k é inicializada em 4 para que a leitura seja feita a partir do primeiro item da matriz (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "input.data" e para dentro do vetor.
 
 A seguir, os valores armazenados no vetor "vet_values" são transferidos para a matriz "mat".
 ```c++
@@ -536,7 +536,7 @@ Também são declaradas as variáveis i e j, que vão representar a linha e colu
 
     int i, j;
 ```
-Por fim, a busca finalmente acontece. Vamos a uma visão mais a fundo dela:
+Enfim, a busca finalmente acontece. Vamos a uma visão mais a fundo dela:
 
 ```c++
 // BFS !!
@@ -856,7 +856,7 @@ Utilizando a seguinte matriz como entrada para os 3 algoritmos, podemos exemplif
 
 A partir da leitura dessa matriz, os métodos devem ser executados e suas iterações e tempo de execução devem ser mostrados no terminal, dessa forma:
 
-<div align = center> <img align src = /img/terminal_exemplo.png> </div>
+<div align = center> <img align src = /img/resultado_esperado.png> </div>
 
 Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo número de iterações, porém com tempos distintos. Já o método randômico faz mais iterações e em um tempo diferente também.
 
@@ -872,9 +872,9 @@ Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo 
 - O algoritmo de caminhamento aleatório pode se comportar de maneira diferente em labirintos com múltiplas soluções ou com obstáculos e desvios. Em labirintos com múltiplas soluções, o algoritmo pode encontrar caminhos diferentes em execuções diferentes, explorando as várias opções disponíveis. No entanto, em labirintos com obstáculos complexos e desvios, o algoritmo pode ter dificuldade em encontrar o caminho objetivo devido à aleatoriedade de suas escolhas.
 - Em resumo, O custo da busca randômica depende de vários fatores, como o tamanho do espaço de busca, a localização do estado objetivo e a sorte do algoritmo ao escolher os próximos estados para explorar. Em alguns casos favoráveis, a busca randômica pode encontrar o objetivo rapidamente, enquanto em outros casos pode levar muito tempo ou até mesmo não encontrar o objetivo. O custo da busca randômica é altamente imprevisível e não pode ser expresso em uma análise assintótica.
 
-
 <h2 align = center>🔧 Compilação e execução </h2>
 </h2>
+
 
 A pasta do repositorio possui um arquivo Makefile que contém as instruções para compilar e executar. Para usar essas instruções, você pode usar o terminal do seu sistema
 operacional e navegar até o diretório raiz do projeto.
