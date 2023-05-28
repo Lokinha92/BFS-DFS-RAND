@@ -2,7 +2,7 @@
 <h1 align = center> Labirinto por Profundidade (DFS), Largura (BFS) e Randomicamente</h1>
 
 <strong><p align = center> GUSTAVO HENRIQUE D'ANUNCIAÇÃO FERREIRA</p></strong>
-<strong><p align = center> YGOR</p></strong>
+<strong><p align = center> YGOR SANTOS VIEIRA</p></strong>
 <strong><p align = center> RAFAEL HENRIQUE REIS COSTA</p></strong>
 <h2 align = center>  🧩 OBJETIVO </h2>
 
@@ -121,9 +121,10 @@ O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo d
 
 <b> bfs.cpp: Contém a implementação do funcionamento das funções utilizadas no método de busca em largura</b>
 
-<b> dfs.hpp: </b>
+<b> bfs.cpp: Contém a implementação do funcionamento das funções utilizadas no método de busca em largura</b>
 
-<b> dfs.cpp: </b>
+<b> dfs.hpp: Contém a declaração das bibliotecas e a classe utilizada, além de atribuir números para o
+caminho,parede,perigo,visitado e final.</b>
 
 <b> random.hpp: Contém a definição da struct utilizada para representar a matriz, além das declarações das funções utilizadas no programa.</b>
 
@@ -638,7 +639,77 @@ Finalmente, uma mensagem é exibida no terminal para dizer que a busca chegou ao
 
 <h3 align = center> BUSCA EM PROFUNDIDADE (DFS)</h3>
 
-YGOR BOTA SUA DOCUMENTAÇÃO AQUI
+A busca em profundidade (DFS) é um algoritmo utilizado para percorrer ou buscar itens dentro das estruturas de dados grafos ou árvores. Sua característica básica é percorrer todos os nós filhos ao nó raiz o mais profundo possível para somente depois retroceder. Iremos compreender a aplicação dessa mecânica no decorrer desse algoritmo.
+Existem várias formas de implementar uma busca em profundidade. Pela natureza de percorrer o grafo ou árvore enquanto houverem filhos não visitados, uma solução natural é utilizar recursão. Outra abordagem é utilizar um algoritmo iterativo e utilizar uma pilha (LIFO) para controlar os nós a serem visitados.
+
+--------------------
+<div align = center> <img align src = /img/DFSimg.png> </div>
+
+
+Na primeira fase da execução do algoritmo, ele coloca a posição inicial (0, 0) do labirinto na pilha. Em seguida, ele verifica a posição a direita e percorre-a até encontrar um obstáculo ou chegar ao fim do labirinto, empilhando todas as posições percorridas. Durante esse processo, as posições já percorridas são marcadas e não podem ser percorridas novamente. A fila é utilizada para determinar a ordem em que as posições devem ser exploradas pelo algoritmo. No início, a posição inicial (0, 0) é adicionada à fila. A cada iteração do loop principal do algoritmo, a posição da frente da fila é removida e examinada. Se essa posição levar a novos caminhos disponíveis, essas posições são adicionadas à fila, permitindo que sejam exploradas posteriormente.
+
+c++
+void DFS::testarMovimento(queue<pair<int, int>> &fila, vector<vector<int>> &matriz, vector<vector<int>> &matriz_aux, int x, int y) {
+	if (y + 1 < tamanho) {
+		if (matriz_aux[x][y + 1] == caminho || matriz[x][y + 1] == perigo || matriz[x][y + 1] == final) {
+			fila.push(make_pair(x, y + 1));
+			pilha.push(make_pair(x, y));
+			return;
+		}
+	}
+}
+
+Quando o algoritmo encontra uma barreira, ele procura por outras direções para seguir, começando pela direita, depois para baixo, esquerda e acima, se necessário. Se o algoritmo ficar preso entre barreiras, ele desempilha a posição atual e atribui o valor 1 a ela, indicando que não deve mais ser percorrida, e continua em busca de uma nova posição viável.
+
+"percorreMatriz(vector<vector<int>>& matriz)": Essa é a função principal do algoritmo DFS. Ela recebe a matriz do labirinto como argumento. A função cria uma fila vazia e adiciona a posição inicial (0, 0) à fila. Também cria uma matriz auxiliar com as mesmas dimensões do labirinto para acompanhar as posições visitadas.
+
+A função executa um loop enquanto a fila não estiver vazia. A cada iteração, ela incrementa a quantidade de passos. A posição da frente da fila é obtida e armazenada nas variáveis a e b.
+
+Se a posição atual for a posição final, a função imprime uma mensagem informando que o DFS chegou ao final do labirinto e interrompe o loop.
+
+A matriz auxiliar é atualizada para marcar a posição atual como visitada. A posição da frente é removida da fila e a função testarMovimento é chamada para verificar as possíveis movimentações a partir dessa posição. Se a fila estiver vazia neste ponto, significa que não há mais caminho disponível.
+
+Se a posição atual for um perigo, o algoritmo redefine o labirinto e a matriz auxiliar, esvazia a fila e a pilha, adiciona a posição inicial novamente à fila e atualiza a matriz auxiliar para marcar todas as posições não pertencentes a paredes, perigos ou a posição final como caminho.
+
+c++
+void DFS::percorreMatriz(vector<vector<int>> &matriz) {
+	queue<pair<int, int>> fila;
+
+	fila.push(make_pair(0, 0));
+	vector<vector<int>> matriz_aux;
+
+    for (auto &v1 : matriz) {
+		vector<int> linha_aux;
+		for (auto &v2 : v1) {
+			if (v2 == parede) {
+				linha_aux.push_back(parede);
+			} else if (v2 == perigo) {
+				linha_aux.push_back(perigo);
+			} else if (v2 == final) {
+				linha_aux.push_back(final);
+			} else {
+				linha_aux.push_back(0);
+			}
+		}
+		matriz_aux.push_back(linha_aux);
+	}
+
+	while (!fila.empty()) {
+		quantidaPassos++;
+		pair<int, int> frente = fila.front();
+
+		int a = frente.first;
+		int b = frente.second;
+    }
+}
+
+
+O algoritmo imprime o número de passos necessários para alcançar o final do labirinto. Por fim, ele imprime novamente o labirinto, destacando as posições visitadas durante o percurso com o valor 1.
+
+c++
+	printf("Quantidade de passos DFS: %d\n", this->quantidaPassos);
+	log(matriz_aux, -1, -1);
+	resultadoFinal();
 
 <h3 align = center> MÉTODO RANDÔMICO</h3>
 
@@ -848,6 +919,12 @@ Após o processo de análise e de submeter os algoritmos a testes com diferentes
 
 <h2 align = center>🔚 Conclusão </h2>
 
+Após submeter os 3 algoritmos a testes com diferentes matrizes de diferentes tamanhos, registramos os tempos de execução em uma tabela.
+
+<div align = center> <img align src = /img/tabela_1.png> </div>
+<div align = center> <img align src = /img/tabela_2.png> </div>
+
+
 ## BFS
 
 - No método de busca em largura, o tempo de execução e o número de iterações pode variar de acordo com a dimensão da matriz, com a distribuição das paredes pela matriz, ou seja, pela quantidade de caminhos disponíveis para chegar até o alvo, e também com a distância do caractere alvo em relação ao ponto de início da busca.
@@ -861,6 +938,10 @@ Após o processo de análise e de submeter os algoritmos a testes com diferentes
 - Nesta implementação, o custo é dominado pela leitura da matriz do arquivo input.data e pelo loop while onde a busca acontece. Ambas as condições estão diretamente relacionadas com o tamanho da matriz. Com isso, podemos dizer que o custo para essa implementação é O(tam²), onde tam é o tamanho da matriz.
 
 ## DFS
+
+- No caso do DFS, ele pode ser mais rápido em alguns casos, mas pode não encontrar a solução mais curta. Isso ocorre porque o DFS segue um caminho até o final antes de voltar e explorar outras alternativas, o que pode levar a caminhos mais longos. No entanto, o DFS pode ser útil em situações em que o caminho mais curto não é necessariamente o mais importante, como em jogos em que o objetivo é explorar o mapa ou encontrar itens.
+Além disso, é importante lembrar que o desempenho de cada algoritmo pode variar dependendo do tamanho e da complexidade do labirinto.
+- Em matrizes menores, como 10x10 e 20x20, o algoritmo DFS pode encontrar soluções rapidamente, enquanto em matrizes maiores, como 50x50 e 100x100, o tempo de execução pode aumentar significativamente. Portanto, é importante testar os algoritmos em diferentes cenários para entender suas limitações e escolher a abordagem mais adequada para o problema em questão.
 
 ## Randômico
 
