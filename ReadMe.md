@@ -467,7 +467,7 @@ void BFS()
 
 A princípio, a dimensão da matriz lida do arquivo "input.data" é armazenada na variável "tam", a variável k é inicializada em 4 para que a leitura seja feita a partir do primeiro item da matriz (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "input.data" e para dentro do vetor.
 
-A seguir, os valores armazenados no vetor "vet_values" são transferidos para a matriz "mat".
+A seguir, os valores que compõem a matriz armazenados no vetor "vet_values" são transferidos para a matriz "mat".
 ```c++
     for (int i = 0; i < tam; i++)
     {
