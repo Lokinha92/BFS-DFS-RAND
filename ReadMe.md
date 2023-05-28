@@ -90,8 +90,8 @@ O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo d
 
 <h2 align = center>📄 ARQUIVOS UTILIZADOS</h2>
 
-<h3><b>Arquivos de codificação: </b></h3>
-<table>
+<h3 align = center><b>Arquivos de codificação: </b></h3>
+<table align = center>
 <tr>
         <td> main.cpp </td>    
     </tr>
@@ -131,8 +131,8 @@ O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo d
 
 <strong>OBS: Os arquivos com extensão ".hpp" deve estar incluso aos arquivos "main.cpp" e também aos seus respectivos arquivos com extensão ".cpp"</strong>
 
-<h3><b>Arquivos de leitura: </b></h3>
-<table>
+<h3 align = center><b>Arquivos de leitura: </b></h3>
+<table align = center>
 <tr>
         <td> input.data </td>    
     </tr>
@@ -140,8 +140,8 @@ O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo d
 
 <b>input.data: Contém em sua primeira linha a quantidade de linhas e colunas que as matrizes terão e, no resto do documento, os valores que irão compor essas matrizes</b>
 
-<h3><b>Arquivos de saída: </b></h3>
-<table>
+<h3 align = center><b>Arquivos de saída: </b></h3>
+<table align = center>
 <tr>
         <td> log_bfs.data </td>    
     </tr>
