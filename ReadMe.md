@@ -85,7 +85,6 @@ A estrutura padrão de matriz que é utilizada contém os seguintes símbolos:
 # Exemplo de Entrada
 ![This is an image](https://github.com/RafaelReisyzx/Labirinto-DFS-BFS-Random/blob/main/imgs/exemplo1.png)
 
-
 O labirinto é composto por uma matriz quadrada. Acima, podemos ver um exemplo do arquivo input.data. Na primeira linha, temos dois números inteiros que servem para configurar as estruturas do labirinto. O primeiro e o segundo número representam as linhas e colunas das matrizes. Esses números precisam ser iguais, pois está configurado para matrizes quadradas. As linhas seguintes são as linhas que constroem a matriz que será lida. Ela precisa estar separada por espaços, conforme mostrado no exemplo. O caminhamento se inicia no ponto (0,0) e finaliza no ponto contendo o objetivo "?".
 
 <h2 align = center>📄 ARQUIVOS UTILIZADOS</h2>
