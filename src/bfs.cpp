@@ -166,7 +166,7 @@ void log(char *mat, int tam)
 void BFS()
 {
     int tam = matrix_size(), k = 4;
-    char mat[tam][tam], vet_values[tam * tam];
+    char mat[tam][tam], vet_values[(tam * tam)+4];
 
     matrix_values(vet_values);
 
