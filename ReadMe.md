@@ -10,7 +10,7 @@
 
 <h2 align = center>  🧭 REGRAS: </h2> 
 
-- O caminhamento deve ocorrer em uma única matriz de tamanho N x N
+- O caminhamento deve ocorrer em uma única matriz de tamanho N x N.
 - --
 - Quatro tipos de elementos vão compor a matriz e srão espalhados aleatoriamente: (a) item de passagem livre (número 1 na posição da matriz); (b) item de dano, indicado pelo carácter ‘*’; (c) paredes definidas como ‘#’ e; por fim, (d) uma ‘?’ que indica o alvo da exploração.
 - --
