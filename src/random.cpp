@@ -38,7 +38,7 @@ int Random(Mapa *mat){
 	mat->Matriz.passos=0;
 	for(;;){		 
 
-	//1° Etapa Verificador de casa
+	//1Â° Etapa Verificador de casa
 	
     if(mat->Matriz.map[i][j]=='*'){	 
         mat->Matriz.map[i][j]='1';
@@ -52,7 +52,7 @@ int Random(Mapa *mat){
 	Finalization(mat);
      break;
     }
-	//2° Etapa Demarcar Paredes
+	//2Â° Etapa Demarcar Paredes
 	//cima
 	if(mat->Matriz.map[i-1][j]=='#'){
 		Cima=-1;
@@ -85,7 +85,7 @@ int Random(Mapa *mat){
 	if(mat->Matriz.map[i+1][j+1]=='#'){
 		DiagonalDireitaInferior=-1;
 	}
-    //3° Etapa Escolher caminho possivel de caminhar
+    //3Â° Etapa Escolher caminho possivel de caminhar
 	for(r=0;r<1;){
 	    data = rand()%8;
 	if(data==1&&Cima!=-1&&i>0){
@@ -106,7 +106,7 @@ int Random(Mapa *mat){
 	    r=1;	
 	}	
    }
-    //4° Etapa Caminhar
+    //4Â° Etapa Caminhar
 	
 	if(data==1){
 	    i=i-1;
@@ -157,10 +157,10 @@ int Random(Mapa *mat){
 {
 	int i,j,n;
 	n=mat->Matriz.tam;
-	remove("dataset/outputRandom.data");
-	FILE *g = fopen("dataset/outputRandom.data", "a");
+	remove("dataset/log_random.data");
+	FILE *g = fopen("dataset/log_random.data", "a");
     if (g == NULL) {
-        cout <<"Erro ao abrir o arquivo para atualização\n";
+        cout <<"Erro ao abrir o arquivo para atualizaÃ§Ã£o\n";
         exit(EXIT_FAILURE);
     }
 	
