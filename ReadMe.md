@@ -201,9 +201,9 @@ A busca é controlada por uma estrutura de fila, onde a posição, ou vértice, 
 
 <div align = center> <img align src = /img/BFS.gif> </div>
 
-<p>No caso desta implementação do método BFS, a busca ocorre em um labirinto em formato de matriz, que segue as regras citadas ao começo do documento. Essa matriz é lida do arquivo "matrix.data" (dataset/matrix.data) e deve obrigatóriamente ser uma matriz quadrada de tamaho NxN. Eis um exemplo de entrada do arquivo "matrix.data" de uma matriz de formato 10x10</p>
+<p>No caso desta implementação do método BFS, a busca ocorre em um labirinto em formato de matriz, que segue as regras citadas ao começo do documento. Essa matriz é lida do arquivo "input.data" (dataset/input.data) e deve obrigatóriamente ser uma matriz quadrada de tamaho NxN. Eis um exemplo de entrada do arquivo "input.data" de uma matriz de formato 10x10</p>
 
-<div align = center> <img align src = /img/entrada_BFS.png> </div>
+<div align = center> <img align src = /img/exemplo_entrada.png> </div>
 
 <h4 align = center>👨‍💻 CODIFICAÇÃO DO MÉTODO DE BUSCA EM LARGURA (BFS)</h4>
 <strong><p align = center> bfs.hpp (src/bfs.hpp)</p></strong>
@@ -279,9 +279,9 @@ int matrix_size();
 void reseta_mat(char **mat, int tam);
 ```
 
-A função "matrix_values()" recebe um vetor do tipo char como parâmetro, e serve para ler a matriz do arquivo "matrix.data" e armazenar os caracteres no vetor.
+A função "matrix_values()" recebe um vetor do tipo char como parâmetro, e serve para ler a matriz do arquivo "input.data" e armazenar os caracteres no vetor.
 
-"matrix_size()" retorna a dimensão da matriz lida do arquivo "matrix.data"
+"matrix_size()" retorna a dimensão da matriz lida do arquivo "input.data"
 
 "reseta_mat()" serve para resetar os valores da matriz quando a busca atinge um "*", e recebe como parâmetro a matriz em questão e um inteiro que representa a dimensão da matriz.
 
@@ -447,7 +447,7 @@ void BFS()
     matrix_values(vet_values);
 ```
 
-A princípio, a dimensão da matriz lida do arquivo "matrix.data" é armazenada na variável "tam", a variável k é inicializada em 4 para que a leitura seja feita a partir do primeiro item da matriz (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "matrix.data" e para dentro do vetor.
+A princípio, a dimensão da matriz lida do arquivo "input.data" é armazenada na variável "tam", a variável k é inicializada em 4 para que a leitura seja feita a partir do primeiro item da matriz (ela servirá como um contador na hora de armazenar os valores do vetor "vet_values" para a matriz), a matriz "mat" é inicializada com as dimensões dadas pelo valor de tam, e o vetor "vet_values" é inicializado com a dimensão dado pelo valor de tam², já que, a quantidade de elementos de uma matriz é dado pelo número de linhas (i) multiplicado pelo número de colunas (j). Depois o vetor "vet_values" é passado como parâmetro da função "matrix_values()" para que os valores sejam lidos do arquivo "input.data" e para dentro do vetor.
 
 A seguir, os valores armazenados no vetor "vet_values" são transferidos para a matriz "mat".
 ```c++
