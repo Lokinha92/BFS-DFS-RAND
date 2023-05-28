@@ -846,6 +846,33 @@ Após o processo de análise e de submeter os algoritmos a testes com diferentes
 
 - 2: Algum dos algoritmos é capaz de encontrar o melhor caminho, ou seja, o com o menor número de iterações?
 
+<h2 align = center>🔚 Conclusão </h2>
+
+## BFS
+
+- No método de busca em largura, o tempo de execução e o número de iterações pode variar de acordo com a dimensão da matriz, com a distribuição das paredes pela matriz, ou seja, pela quantidade de caminhos disponíveis para chegar até o alvo, e também com a distância do caractere alvo em relação ao ponto de início da busca.
+
+- Levando em conta a dimesão da matriz, de forma geral, o BFS tende a ser mais eficiente em matrizes de tamanho médio (entre 20x20 e 51x51), para o caso de matrizes maiores, o desempenho do BFS pode variar de acordo com os outros parâmetros citados.
+
+- O BFS é muito afetado pela quantidade de paredes, já que explora os dados em blocos e, por isso, pode percorrer caminhos maiores para contorna-las.
+
+- Em relação a posição do alvo na matriz, para uma localização do alvo mais proxima à origem da busca, o BFS tende a ser mais eficiente, devido ao seu método de exploração em camadas. Porém, em uma localização mais distante do alvo, o BFS pode apresentar um número de iterações maior, assim como o seu tempo de execução em relação aos outros métodos, devido aos problemas de dimensão da matriz e distribuição das paredes.
+
+- Nesta implementação, o custo é dominado pela leitura da matriz do arquivo input.data e pelo loop while onde a busca acontece. Ambas as condições estão diretamente relacionadas com o tamanho da matriz. Com isso, podemos dizer que o custo para essa implementação é O(tam²), onde tam é o tamanho da matriz.
+
+## DFS
+
+## Randômico
+
+- O desempenho do algoritmo de caminhamento aleatório em termos de tempo de execução e consumo de recursos pode variar dependendo do tamanho do labirinto e da densidade de obstáculos. Em labirintos grandes ou com muitos obstáculos, o algoritmo pode levar mais tempo para encontrar o caminho objetivo, pois a probabilidade de escolher uma direção livre diminui.
+- O algoritmo de caminhamento aleatório pode se comportar de maneira diferente em labirintos com múltiplas soluções ou com obstáculos e desvios. Em labirintos com múltiplas soluções, o algoritmo pode encontrar caminhos diferentes em execuções diferentes, explorando as várias opções disponíveis. No entanto, em labirintos com obstáculos complexos e desvios, o algoritmo pode ter dificuldade em encontrar o caminho objetivo devido à aleatoriedade de suas escolhas.
+- Em resumo, O custo da busca randômica depende de vários fatores, como o tamanho do espaço de busca, a localização do estado objetivo e a sorte do algoritmo ao escolher os próximos estados para explorar. Em alguns casos favoráveis, a busca randômica pode encontrar o objetivo rapidamente, enquanto em outros casos pode levar muito tempo ou até mesmo não encontrar o objetivo. O custo da busca randômica é altamente imprevisível e não pode ser expresso em uma análise assintótica.
+
+- --
+
+- Com relação ao tópico 2 da discussão, podemos dizer que o BFS é capaz de encontrar o caminho mais curto em termos de iterações, devido ao fato de explorar os vizinhos mais próximos da origem da busca antes de avançar mais. Isso garante que quando o algoritmo atinge o alvo, o caminho tomado foi o mais curto possível em termos de iterações.
+
+
 <h2 align = center>📈 Resultados esperados</h2>
 
 É esperado que, a partir de uma mesma entrada para os 3 algoritmos, eles sejam capazes de percorrer o labirinto rumo ao caractere alvo realizando a busca de acordo com o que cada um deles se propõe e seguindo as regras descritas, exibindo ao final o tempo de execução e o número de iterações feitas no processo. Isso permitirá uma análise dos 3 métodos, comparando seus tempos de execução e a quantidade de iterações.
@@ -860,17 +887,6 @@ A partir da leitura dessa matriz, os métodos devem ser executados e suas itera�
 
 Nota-se que, por se tratar de um "caminho fechado", o BFS e o DFS fazem o mesmo número de iterações, porém com tempos distintos. Já o método randômico faz mais iterações e em um tempo diferente também.
 
-<h2 align = center>🔚 Conclusão </h2>
-
-## BFS
-
-## DFS
-
-## Randômico
-
-- O desempenho do algoritmo de caminhamento aleatório em termos de tempo de execução e consumo de recursos pode variar dependendo do tamanho do labirinto e da densidade de obstáculos. Em labirintos grandes ou com muitos obstáculos, o algoritmo pode levar mais tempo para encontrar o caminho objetivo, pois a probabilidade de escolher uma direção livre diminui.
-- O algoritmo de caminhamento aleatório pode se comportar de maneira diferente em labirintos com múltiplas soluções ou com obstáculos e desvios. Em labirintos com múltiplas soluções, o algoritmo pode encontrar caminhos diferentes em execuções diferentes, explorando as várias opções disponíveis. No entanto, em labirintos com obstáculos complexos e desvios, o algoritmo pode ter dificuldade em encontrar o caminho objetivo devido à aleatoriedade de suas escolhas.
-- Em resumo, O custo da busca randômica depende de vários fatores, como o tamanho do espaço de busca, a localização do estado objetivo e a sorte do algoritmo ao escolher os próximos estados para explorar. Em alguns casos favoráveis, a busca randômica pode encontrar o objetivo rapidamente, enquanto em outros casos pode levar muito tempo ou até mesmo não encontrar o objetivo. O custo da busca randômica é altamente imprevisível e não pode ser expresso em uma análise assintótica.
 
 <h2 align = center>🔧 Compilação e execução </h2>
 </h2>
